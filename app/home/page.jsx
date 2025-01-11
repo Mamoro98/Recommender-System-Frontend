@@ -1,19 +1,38 @@
 'use client'
 import React, { useState } from "react";
 import Image from "next/image";
-import "./style.css";
+import  "./style.css";
 
 const MovieRecommendations = () => {
-  const [userId, setUserId] = useState("");
+  const [movieName, setMovieName] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const [rating, setRating] = useState("");
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const fetchSuggestions = async (query) => {
+    if (query.length < 2) return setSuggestions([]);
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/search/movie?api_key=918cce94627c68fa3cb45b04c4dc0691&query=${query}`
+      );
+      const data = await response.json();
+      setSuggestions(data.results.map((movie) => movie.title));
+    } catch (error) {
+      console.error("Error fetching movie suggestions:", error);
+    }
+  };
+
+  const handleMovieChange = (e) => {
+    setMovieName(e.target.value);
+    fetchSuggestions(e.target.value);
+  };
 
   const fetchRecommendations = async () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/recommend?user_id=${userId}&rating=${rating}`
+        `http://127.0.0.1:5000/recommend?user_id=${movieName}&rating=${rating}`
       );
       const data = await response.json();
       setRecommendations(data);
@@ -29,11 +48,18 @@ const MovieRecommendations = () => {
       <div className={"inputContainer"}>
         <input
           type="text"
-          placeholder="Enter User ID"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
+          placeholder="Enter Movie Name"
+          value={movieName}
+          onChange={handleMovieChange}
           className={"inputBox"}
+          list="suggestions"
         />
+        <datalist id="suggestions">
+          {suggestions.map((suggestion, index) => (
+            <option key={index} value={suggestion} />
+          ))}
+        </datalist>
+
         <input
           type="text"
           placeholder="Enter Rating"
@@ -59,10 +85,14 @@ const MovieRecommendations = () => {
                 height={300}
                 className={"poster"}
               />
-              <h3>{movie.title}</h3>
+              <h3 style={{color:"black"}}>{movie.title}</h3>
               <p>{movie.overview}</p>
-              <p><strong>Release Date:</strong> {movie.release_date}</p>
-              <p><strong>Rating:</strong> {movie.rating}</p>
+              <p>
+                <strong>Release Date:</strong> {movie.release_date}
+              </p>
+              <p>
+                <strong>Rating:</strong> {movie.rating}
+              </p>
             </div>
           ))}
         </div>
