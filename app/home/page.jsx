@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import  "./style.css";
+import { CircularProgress } from "@mui/material";
 
 const MovieRecommendations = () => {
   const [movieName, setMovieName] = useState("");
@@ -32,7 +33,7 @@ const MovieRecommendations = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/recommend?user_id=${movieName}&rating=${rating}`
+        `https://recommender-system-backend-d3xf.onrender.com/recommend?user_id=${movieName}&rating=${rating}`
       );
       const data = await response.json();
       setRecommendations(data);
@@ -73,7 +74,7 @@ const MovieRecommendations = () => {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <CircularProgress />
       ) : (
         <div className={"grid"}>
           {recommendations.map((movie) => (
