@@ -1,7 +1,7 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import  "./style.css";
+import "./style.css";
 import { CircularProgress } from "@mui/material";
 
 const MovieRecommendations = () => {
@@ -10,7 +10,7 @@ const MovieRecommendations = () => {
   const [rating, setRating] = useState("");
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [error, setError] = useState(false);
   const fetchSuggestions = async (query) => {
     if (query.length < 2) return setSuggestions([]);
     try {
@@ -31,12 +31,20 @@ const MovieRecommendations = () => {
 
   const fetchRecommendations = async () => {
     setLoading(true);
+    setError(false)
     try {
+      // const response = await fetch(
+      //   `https://recommender-system-backend-d3xf.onrender.com/recommend?user_id=${movieName}&rating=${rating}`
+      // );
       const response = await fetch(
-        `https://recommender-system-backend-d3xf.onrender.com/recommend?user_id=${movieName}&rating=${rating}`
+        `http://127.0.0.1:5000/recommend?user_id=${movieName}&rating=${rating}`
       );
-      const data = await response.json();
-      setRecommendations(data);
+      if (response.status != 200) {
+        setError(true);
+      } else {
+        const data = await response.json();
+        setRecommendations(data);
+      }
     } catch (error) {
       console.error("Error fetching recommendations:", error);
     }
@@ -75,6 +83,23 @@ const MovieRecommendations = () => {
 
       {loading ? (
         <CircularProgress />
+      ) : error ? (
+        <span
+          style={{
+            color: "white",
+            backgroundColor: "red",
+            padding: "10px 20px",
+            borderRadius: "8px",
+            fontWeight: "bold",
+            fontSize: "16px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            display: "inline-block",
+            marginTop: "20px",
+            textTransform: "uppercase",
+          }}
+        >
+          🚫 Movie Not Found
+        </span>
       ) : (
         <div className={"grid"}>
           {recommendations.map((movie) => (
@@ -86,7 +111,7 @@ const MovieRecommendations = () => {
                 height={300}
                 className={"poster"}
               />
-              <h3 style={{color:"black"}}>{movie.title}</h3>
+              <h3 style={{ color: "black" }}>{movie.title}</h3>
               <p>{movie.overview}</p>
               <p>
                 <strong>Release Date:</strong> {movie.release_date}
