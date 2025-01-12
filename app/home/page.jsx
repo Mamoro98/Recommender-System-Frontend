@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import "./style.css";
 import { CircularProgress } from "@mui/material";
+import Link from "next/link";
 
 const MovieRecommendations = () => {
   const [movieName, setMovieName] = useState("");
@@ -102,8 +103,9 @@ const MovieRecommendations = () => {
         </span>
       ) : (
         <div className={"grid"}>
-          {recommendations.map((movie) => (
-            <div key={movie.movieId} className={"card"}>
+          {recommendations.map((movie,key) => (
+            <Link href={`/Movie/${movie.movieId}`} passHref key={key}>
+            <div key={movie.movieId} className={"card"} style={{ cursor: "pointer" }}>
               <Image
                 src={movie.poster}
                 alt={movie.title}
@@ -112,14 +114,11 @@ const MovieRecommendations = () => {
                 className={"poster"}
               />
               <h3 style={{ color: "black" }}>{movie.title}</h3>
-              <p>{movie.overview}</p>
-              <p>
-                <strong>Release Date:</strong> {movie.release_date}
-              </p>
-              <p>
-                <strong>Rating:</strong> {movie.rating}
-              </p>
+              <p><strong>Release Date:</strong> {movie.release_date}</p>
+              <p><strong>Rating:</strong> {movie.rating}</p>
             </div>
+          </Link>
+          
           ))}
         </div>
       )}
