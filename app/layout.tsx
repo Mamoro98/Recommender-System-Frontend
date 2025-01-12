@@ -3,7 +3,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme/Theme";
-
+import Footer from './components/Footer'
+import Header from './components/Header'
 const inter = Poppins({ weight: ["500"], subsets: ["devanagari"] });
 
 export const metadata: Metadata = {
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <Header />
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <Footer />
       </body>
     </html>
   );
