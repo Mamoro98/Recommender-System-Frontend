@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import styles from "./Footer.module.css";
 import aims from "./aims.png";
+import Link from "next/link";
 const Footer = () => {
   return (
     <footer className={styles.footer}>
@@ -21,14 +22,15 @@ const Footer = () => {
           </a>
         </div>
 
-        <Image
-          src={aims}
-          alt="Your Logo"
-          width={100}
-          height={100}
-          className={styles.logo}
-        />
-
+        <Link href="https://aims.ac.za/" target="_blank">
+          <Image
+            src={aims}
+            alt="Your Logo"
+            width={100}
+            height={100}
+            className={styles.logo}
+          />
+        </Link>
         {/* Professor Info */}
         <div className={styles.section}>
           <h3>Professor Ulrich Paquet </h3>
@@ -42,6 +44,9 @@ const Footer = () => {
           </a>
         </div>
       </div>
+      <Link href="https://aims.ac.za/">
+        <p className={styles.copy}>AIMS south africa.</p>
+      </Link>
       <p className={styles.copy}>
         © {new Date().getFullYear()} All Rights Reserved.
       </p>

@@ -3,12 +3,20 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Header.module.css";
-import aims from './aims.png'
+import aims from "./aims.png";
 const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.logoContainer}>
-        <Image src={aims} alt="Logo" width={70} height={70} />
+        <Link href="https://aims.ac.za/" target="_blank">
+          <Image
+            src={aims}
+            alt="Your Logo"
+            width={70}
+            height={70}
+            className={styles.logo}
+          />
+        </Link>
         <h1 className={styles.title}>Movie Recommender</h1>
       </div>
       <nav className={styles.navLinks}>
