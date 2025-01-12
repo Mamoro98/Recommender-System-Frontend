@@ -34,12 +34,12 @@ const MovieRecommendations = () => {
     setLoading(true);
     setError(false)
     try {
-      // const response = await fetch(
-      //   `https://recommender-system-backend-d3xf.onrender.com/recommend?user_id=${movieName}&rating=${rating}`
-      // );
       const response = await fetch(
-        `http://127.0.0.1:5000/recommend?user_id=${movieName}&rating=${rating}`
+        `https://recommender-system-backend-d3xf.onrender.com/recommend?user_id=${movieName}&rating=${rating}`
       );
+      // const response = await fetch(
+      //   `http://127.0.0.1:5000/recommend?user_id=${movieName}&rating=${rating}`
+      // );
       if (response.status != 200) {
         setError(true);
       } else {
